@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     'users.apps.UsersConfig',
+    'voice.apps.VoiceConfig',
 ]
 
 MIDDLEWARE = [

@@ -95,7 +95,7 @@ class LoginUser(View):
 
     @staticmethod
     def get(request):
-        return render(request, 'user/login_user.html')
+        return render(request, 'user/login.html')
 
     @staticmethod
     def post(request):
@@ -105,8 +105,10 @@ class LoginUser(View):
 
             # 再获取前端发送的图片验证码
             session_code = request.session.get("image_code")
+            request_code = request.POST.get("vercode").upper()
+            print(session_code, request_code)
             if session_code:
-                if session_code == request.POST.get("vercode"):  # 登录成功
+                if session_code == request_code:  # 登录成功
                     request.session["user_id"] = user.id
                     request.session.set_expiry(60 * 60 * 24 * 14)
                     return JsonResponse(data={
@@ -142,40 +144,8 @@ class ForgetUser(View):
 
     @staticmethod
     def post(request):
-        """
-        form = LoginUserForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-
-            # 用户名
-            # user_obj = UserInfo.objects.filter(username=username, password=password).first()
-
-            # 用户名 / 手机号 / 邮箱 ==> 复杂查询--Q
-            user_obj = User.objects.filter(
-                Q(username=username) |
-                Q(phone=username) |
-                Q(email=username)).filter(
-                password=password
-            ).first()
-
-            if user_obj:  # 登录成功
-                request.session["user_id"] = user_obj.id
-                request.session.set_expiry(60 * 60 * 24 * 14)
-                # return redirect('/')
-                data = {
-                    "code": 0,
-                    "msg": "登入成功",
-                    "data": {"access_token": "c262e61cd13ad99fc650e6908c7e5e65b63d2f32185ecfed6b801ee3fbdd5c0a"}
-                }
-                return JsonResponse(data)
-
-            form.add_error("username", "用户名或密码错误！")  # 将错误信息添加到form中
-        return render(request, 'user/login_user.html', {"form": form})
-        """
-
+        print(request.POST)
         return JsonResponse({"code": 0, "msg": "密码找回完成", "data": {"url": "/users/login/"}})
-        # return JsonResponse({"code": 1, "msg": "注册失败", "data": {"error": form.errors}})
 
 
 def logout(request):
