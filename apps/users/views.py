@@ -45,14 +45,12 @@ class Register(View):
 class LoginSms(View):
     """短信登录"""
 
-    @staticmethod
-    def get(request):
+    def get(self, request):
         form = LoginSmsForm()
         print(form)
         return render(request, 'user/login_sms.html', {"form": form})
 
-    @staticmethod
-    def post(request):
+    def post(self, request):
         form = LoginSmsForm(data=request.POST)  # 使用Form校验的时候，要将request的参数发送到Form中
         if form.is_valid():
             user_obj = form.cleaned_data["phone"]  # 这里获取的就是user的对象==>写入session
@@ -93,12 +91,10 @@ class LoginUser(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    @staticmethod
-    def get(request):
+    def get(self, request):
         return render(request, 'user/login.html')
 
-    @staticmethod
-    def post(request):
+    def post(self, request):
         password = md5(request.POST.get("password", None))
         user = User.objects.filter(username=request.POST.get("username")).first()
         if user.password == password:  # 密码输入正确
@@ -138,12 +134,10 @@ class ForgetUser(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    @staticmethod
-    def get(request):
+    def get(self, request):
         return render(request, 'user/forget.html')
 
-    @staticmethod
-    def post(request):
+    def post(self, request):
         print(request.POST)
         return JsonResponse({"code": 0, "msg": "密码找回完成", "data": {"url": "/users/login/"}})
 
@@ -221,7 +215,7 @@ def logout(request):
 
 ######################################## TEST ########################################
 @method_decorator(csrf_exempt)
-def search(request):
+def message_search(request):
     return JsonResponse({
         "code": 0
         , "msg": ""
@@ -271,7 +265,7 @@ def search(request):
 
 
 @method_decorator(csrf_exempt)
-def card(request):
+def message_card(request):
     return JsonResponse({
         "code": 0
         , "msg": ""
@@ -496,5 +490,45 @@ def message_direct(request):
             "id": 111
             , "title": "贤心发来了一段私信"
             , "time": 1507447570000
+        }]
+    })
+
+
+@method_decorator(csrf_exempt)
+def message_task(request):
+    return JsonResponse({
+        "code": 0
+        , "msg": ""
+        , "count": "100"
+        , "data": [{
+            "prograss": "开会"
+            , "time": "一小时"
+            , "complete": "已完成"
+            , "LAY_CHECKED": "true"
+        }, {
+            "prograss": "项目开发"
+            , "time": "两小时"
+            , "complete": "进行中"
+            , "LAY_CHECKED": "true"
+        }, {
+            "prograss": "陪吃饭"
+            , "time": "一小时"
+            , "complete": "未完成"
+        }, {
+            "prograss": "修改小bug"
+            , "time": "半小时"
+            , "complete": "未完成"
+        }, {
+            "prograss": "修改大bug"
+            , "time": "两小时"
+            , "complete": "未完成"
+        }, {
+            "prograss": "修改小bug"
+            , "time": "半小时"
+            , "complete": "未完成"
+        }, {
+            "prograss": "修改大bug"
+            , "time": "两小时"
+            , "complete": "未完成"
         }]
     })

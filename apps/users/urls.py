@@ -21,9 +21,10 @@ urlpatterns = [
     url(r'^authorization/$', obtain_jwt_token, name="authorization"),
 
     ######################################## TEST ########################################
-    url(r'^search/$', search, name="search"),
-    url(r'^card/$', card, name="card"),
+    url(r'^search/$', message_search, name="search"),
+    url(r'^card/$', message_card, name="card"),
     url(r'^all/$', message_all, name="all"),
     url(r'^notice/$', message_notice, name="notice"),
     url(r'^direct/$', message_direct, name="direct"),
+    url(r'^task/$', message_task, name="task"),
 ]

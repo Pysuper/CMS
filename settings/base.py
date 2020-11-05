@@ -43,6 +43,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     # 'middleware.auth.AuthMiddleware'  # 手动实现中间件
+    "middleware.auth.AuthMiddleWare",
 
 ]
 
